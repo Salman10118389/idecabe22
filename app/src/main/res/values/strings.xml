@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">idecabe2</string>
+    <string name="title_activity_bottom_navigation">BottomNavigationActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="add_project">Add Project</string>
+    <string name="detailFragment">detailfragment</string>
+    <string name="Regis">register</string>
+    <string name="enter_email">Enter Email</string>
+    <string name="enter_fullname">Please Enter your Fullname</string>
+    <string name="enter_pass">Please Enter Password</string>
+    <string name="longer_pass">Pleases enter longer password</string>
+    <string name="login">login</string>
 </resources>
