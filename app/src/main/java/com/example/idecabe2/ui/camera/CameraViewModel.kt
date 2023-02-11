@@ -1,4 +1,4 @@
-package com.example.idecabe2.ui.home
+package com.example.idecabe2.ui.camera
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,7 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(val repo: ProjectRepository) : ViewModel() {
+class CameraViewModel @Inject constructor(val repo: ProjectRepository) : ViewModel() {
 
     private val _getProjects = MutableLiveData<UiState<List<Project>>>()
     val getProjects: LiveData<UiState<List<Project>>>

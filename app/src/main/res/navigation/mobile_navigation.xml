@@ -10,17 +10,35 @@
         android:name="com.example.idecabe2.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home">
-        <action
-            android:id="@+id/action_to_project_detail_fragment"
-            app:destination="@id/projecctDetailFragment"
-            />
     </fragment>
+
+
+    <action
+        android:id="@+id/action_to_project_detail_fragment"
+        app:destination="@id/projecctDetailFragment"
+        />
+
+    <action
+        android:id="@+id/nav_test_fragment"
+        app:destination="@+id/navigation_blacnk">
+    </action>
+
+    <fragment
+        android:id="@+id/navigation_blacnk"
+        android:name="com.example.idecabe2.ui.home.BlankFragment"
+        android:label="@string/test"
+        tools:layout="@layout/fragment_blank"/>
 
     <fragment
         android:id="@+id/navigation_add_project"
         android:name="com.example.idecabe2.ui.addProject.AddProjectFragment"
         android:label="Add Project"
-        tools:layout="@layout/fragment_add_project" />
+        tools:layout="@layout/fragment_add_project" >
+        <action
+            android:id="@+id/action_to_home"
+            app:destination="@id/navigation_home"
+            />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_notifications"
@@ -33,4 +51,11 @@
         android:name="com.example.idecabe2.ui.projectDetail.ProjectDetailFragment"
         android:label="@string/detailFragment"
         tools:layout="@layout/fragment_project_detail"/>
+
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="com.example.idecabe2.ui.camera.CameraFragment"
+        android:label="@string/camera"
+        tools:layout="@layout/fragment_camera"
+        />
 </navigation>

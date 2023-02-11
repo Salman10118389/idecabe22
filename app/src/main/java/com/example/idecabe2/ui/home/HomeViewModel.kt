@@ -22,4 +22,5 @@ class HomeViewModel @Inject constructor(val repo: ProjectRepository) : ViewModel
             _getProjects.value = it
         }
     }
+
 }

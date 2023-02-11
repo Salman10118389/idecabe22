@@ -32,7 +32,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:src="@drawable/logo_brin" />
 
         <com.google.android.material.card.MaterialCardView
@@ -113,7 +113,6 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:orientation="vertical"
                     android:visibility="visible"
-                    android:layout_marginBottom="@dimen/_32sdp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_project">
                 </androidx.recyclerview.widget.RecyclerView>

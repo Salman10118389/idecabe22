@@ -42,10 +42,25 @@
                 android:gravity="center_horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="MissingConstraints"
+                />
+
+            <ImageView
+                android:layout_width="@dimen/_32sdp"
+                android:layout_height="@dimen/_32sdp"
+                android:src="@drawable/ic_baseline_settings_24"
+                android:id="@+id/buttonSettings"
+                app:layout_constraintEnd_toEndOf="parent"
                 tools:ignore="MissingConstraints" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Here are your photos"
+        />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_photo"
         android:layout_width="match_parent"
@@ -58,7 +73,6 @@
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="3"
         android:background="@color/white"
-        tools:itemCount="6"
         tools:listitem="@layout/item_photo" />
 
     <androidx.constraintlayout.widget.ConstraintLayout

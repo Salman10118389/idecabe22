@@ -1,6 +1,7 @@
 package com.example.idecabe2.data.reporitory
 
 import android.content.SharedPreferences
+import android.util.Log
 import com.example.idecabe2.data.model.User
 import com.example.idecabe2.utils.FirestoreTable
 import com.example.idecabe2.utils.UiState
@@ -30,6 +31,17 @@ class AuthRepositoryImp(val auth: FirebaseAuth,
                     updateUserInfo(user) {state ->
                         when(state){
                             is UiState.Success -> {
+                                storeSession(id = it.result.user?.uid ?: ""){state ->
+                                    if (state == null){
+                                        result.invoke(
+                                            UiState.failure("Session Stored Failed")
+                                        )
+                                    }else {
+                                        result.invoke(
+                                            UiState.Success("Session Stored Successfully...")
+                                        )
+                                    }
+                                }
                                 result.invoke(UiState.Success("User Registration Successfull.."))
                             }
                             is UiState.failure -> {
@@ -75,6 +87,7 @@ class AuthRepositoryImp(val auth: FirebaseAuth,
 
     override fun updateUserInfo(user: User, result: (UiState<String>) -> Unit) {
         val document = database.collection(FirestoreTable.USERS).document(user.user_id)
+//        user.user_id = document.id
         document.set(user)
             .addOnSuccessListener {
                 result.invoke(
@@ -89,10 +102,9 @@ class AuthRepositoryImp(val auth: FirebaseAuth,
 
     override fun loginUser(email: String, password: String, result: (UiState<String>) -> Unit) {
         auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener{
-                if (it.isSuccessful){
-                    val id = it.result.user?.uid.toString()
-                    storeSession(id = id ?: ""){
+            .addOnCompleteListener{task ->
+                if (task.isSuccessful){
+                    storeSession(id = task.result.user?.uid ?: ""){
                         if (it == null) {
                             result.invoke(
                                 UiState.failure("Failed to Store Local Session")
@@ -101,6 +113,7 @@ class AuthRepositoryImp(val auth: FirebaseAuth,
                             result.invoke(
                                 UiState.Success("Login Successfull...")
                             )
+                            Log.d("TAG", "loginUser: " + (task.result.user?.uid ?: ""))
                         }
                     }
                 }
@@ -124,6 +137,7 @@ class AuthRepositoryImp(val auth: FirebaseAuth,
                     val user = it.result.toObject(User::class.java)
                     appReferences.edit().putString(sharedPreferences.USER_SESSION, gson.toJson(user)).apply()
                     result.invoke(user)
+                    Log.d("TAG", "storeSession: " + id)
                 }else{
                     result.invoke(null)
                 }
@@ -134,14 +148,21 @@ class AuthRepositoryImp(val auth: FirebaseAuth,
     }
 
     override fun getSession(result: (User?) -> Unit) {
-        val uses_str = appReferences.getString(sharedPreferences.USER_SESSION, null)
+        val usesStr = appReferences.getString(sharedPreferences.USER_SESSION, null)
 
-        if (uses_str == null){
+        if (usesStr == null){
             result.invoke(null)
         }else {
-            val user =gson.fromJson(uses_str, User::class.java)
+            val user =gson.fromJson(usesStr, User::class.java)
             result.invoke(user)
+            Log.d("TAG", "getSession: " + user.user_id)
         }
+    }
+
+    override fun logout(result: () -> Unit) {
+        auth.signOut()
+        appReferences.edit().putString(sharedPreferences.USER_SESSION, null).apply()
+        result.invoke()
     }
 
 }
