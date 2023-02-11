@@ -1,52 +1,32 @@
-package com.example.idecabe.ui.account
+package com.example.idecabe2.ui.account
 
-import android.content.Intent
+import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.example.idecabe2.databinding.FragmentAccountBinding
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.ktx.Firebase
+import com.example.idecabe2.R
 
 class AccountFragment : Fragment() {
 
-    private lateinit var binding: FragmentAccountBinding
-    private lateinit var auth: FirebaseAuth
-    private lateinit var userId: String
+    companion object {
+        fun newInstance() = AccountFragment()
+    }
+
+    private lateinit var viewModel: AccountViewModel
+
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        val accountViewModel =
-            ViewModelProvider(this).get(AccountViewModel::class.java)
-
-        binding = FragmentAccountBinding.inflate(inflater, container, false)
-
-//        val textView: TextView = binding.textNotifications
-//        accountViewModel.text.observe(viewLifecycleOwner) {
-//            textView.text = it
-//        }
-        userId = FirebaseAuth.getInstance().currentUser?.uid.toString()
-
-        binding.textLogout.setOnClickListener{
-            if(userId.isNotEmpty()){
-                logOut()
-            }
-        }
-        return binding.root
+    ): View? {
+        return inflater.inflate(R.layout.fragment_account, container, false)
     }
 
-    private fun logOut(){
-        auth = FirebaseAuth.getInstance()
-        auth.signOut()
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel = ViewModelProvider(this).get(AccountViewModel::class.java)
+        // TODO: Use the ViewModel
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-    }
 }
