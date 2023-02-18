@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.camera.ImagePreviewActivity">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/cameraPrev"/>
+    <ImageView
+        android:id="@+id/btnChecklist"
+        android:layout_width="@dimen/_60sdp"
+        android:layout_height="@dimen/_60sdp"
+        android:text="@string/take_photo"
+        android:layout_marginStart="50dp"
+        android:layout_marginBottom="50dp"
+        android:layout_marginEnd="50dp"
+        android:elevation="2dp"
+        android:tint="@color/colorPrimaryDark"
+        android:src="@drawable/ic_baseline_check_24"
+        android:background="@color/white"
+        android:layout_gravity="center_horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnCancel"
+        android:drawableLeft="@drawable/ic_baseline_photo_camera_24"
+        tools:ignore="UseAppTint" />
+
+    <ImageView
+        android:id="@+id/btnCancel"
+        android:layout_width="@dimen/_60sdp"
+        android:layout_height="@dimen/_60sdp"
+        android:text="@string/take_photo"
+        android:layout_marginStart="50dp"
+        android:layout_marginBottom="50dp"
+        android:layout_marginEnd="50dp"
+        android:elevation="2dp"
+        android:src="@drawable/close94"
+        android:layout_gravity="center_horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btnChecklist"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:drawableLeft="@drawable/ic_baseline_photo_camera_24"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

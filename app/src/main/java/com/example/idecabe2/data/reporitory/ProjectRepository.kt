@@ -11,5 +11,5 @@ interface ProjectRepository {
     fun addProject(project: Project, result: (UiState<Pair<Project, String>>) -> Unit)
     fun updateProject(project: Project, result: (UiState<String>) -> Unit)
     suspend fun uploadSingleFile(fileUri: Uri, onResult: (UiState<Uri>) -> Unit)
-    suspend fun uploadMultipleFile(fileUir: List<Uri>, onResult: (UiState<Uri>) -> Unit)
+    suspend fun uploadMultipleFile(fileUir: List<Uri>, onResult: (UiState<List<Uri>>) -> Unit)
 }

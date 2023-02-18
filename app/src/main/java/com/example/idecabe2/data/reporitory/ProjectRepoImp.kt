@@ -81,7 +81,10 @@ class ProjectRepoImp(private val database: FirebaseFirestore, private val storag
         }
     }
 
-    override suspend fun uploadMultipleFile(fileUir: List<Uri>, onResult: (UiState<Uri>) -> Unit) {
+    override suspend fun uploadMultipleFile(
+        fileUir: List<Uri>,
+        onResult: (UiState<List<Uri>>) -> Unit
+    ) {
 
     }
 

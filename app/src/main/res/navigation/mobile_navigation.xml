@@ -41,6 +41,13 @@
     </fragment>
 
     <fragment
+        android:id="@+id/navigation_camera"
+        android:name="com.example.idecabe2.ui.camera.CameraFragment"
+        android:label="Camera Fragment"
+        tools:layout="@layout/fragment_camera"
+        />
+
+    <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.example.idecabe2.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
@@ -50,7 +57,12 @@
         android:id="@+id/projecctDetailFragment"
         android:name="com.example.idecabe2.ui.projectDetail.ProjectDetailFragment"
         android:label="@string/detailFragment"
-        tools:layout="@layout/fragment_project_detail"/>
+        tools:layout="@layout/fragment_project_detail">
+        <action
+            android:id="@+id/action_projec_detail_to_camera"
+            app:destination="@+id/navigation_camera"
+            />
+    </fragment>
 
     <fragment
         android:id="@+id/cameraFragment"
