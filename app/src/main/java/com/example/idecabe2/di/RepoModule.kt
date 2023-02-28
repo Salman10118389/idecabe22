@@ -1,10 +1,7 @@
 package com.example.idecabe2.di
 
 import android.content.SharedPreferences
-import com.example.idecabe2.data.reporitory.AuthRepository
-import com.example.idecabe2.data.reporitory.AuthRepositoryImp
-import com.example.idecabe2.data.reporitory.ProjectRepoImp
-import com.example.idecabe2.data.reporitory.ProjectRepository
+import com.example.idecabe2.data.reporitory.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.auth.FirebaseAuthCredentialsProvider
@@ -33,5 +30,13 @@ object RepoModule {
         gson: Gson
         ): AuthRepository{
         return AuthRepositoryImp(auth, database, appReferences, gson)
+    }
+
+    @Provides
+    @Singleton
+    fun provideProjectCollabRepo(
+        database: FirebaseFirestore
+    ): ProjectCollabRepo {
+        return ProjectCollabRepoImp(database)
     }
 }

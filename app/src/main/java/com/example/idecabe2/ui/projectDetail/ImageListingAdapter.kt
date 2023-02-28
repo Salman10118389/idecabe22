@@ -7,9 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Recycler
 import com.example.idecabe2.databinding.ItemPhotoBinding
 
-class ImageListingAdapter: RecyclerView.Adapter<ImageListingAdapter.MyViewHolder>() {
-
-    private var list: MutableList<Uri> = arrayListOf()
+class ImageListingAdapter(private val list: List<Uri>): RecyclerView.Adapter<ImageListingAdapter.MyViewHolder>() {
 
     inner class MyViewHolder( val binding: ItemPhotoBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(item: Uri, position: Int){
@@ -17,10 +15,6 @@ class ImageListingAdapter: RecyclerView.Adapter<ImageListingAdapter.MyViewHolder
         }
     }
 
-    fun onUpdateList(list: MutableList<Uri>){
-        this.list = list
-        notifyDataSetChanged()
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView = ItemPhotoBinding.inflate(LayoutInflater.from(parent.context), parent, false)

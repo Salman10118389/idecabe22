@@ -1,7 +1,6 @@
 package com.example.idecabe2.ui.projectDetail
 
 import android.Manifest
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -12,20 +11,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.idecabe2.R
 import com.example.idecabe2.data.model.Project
-import com.example.idecabe2.databinding.FragmentHomeBinding
 import com.example.idecabe2.databinding.FragmentProjectDetailBinding
 import com.example.idecabe2.ui.camera.CameraActivity
-import com.example.idecabe2.ui.home.HomeAdapter
-import com.github.dhaval2404.imagepicker.ImagePicker
 import dagger.hilt.android.AndroidEntryPoint
 
 private const val TAG = "ProjectDetailFragment"
@@ -35,7 +31,7 @@ class ProjectDetailFragment : Fragment() {
     private var imageUri: MutableList<Uri> = arrayListOf()
     private lateinit var binding: FragmentProjectDetailBinding
     private lateinit var objProject: Project
-
+    private lateinit var imageListingAdapter: ImageListingAdapter
     //connect to adapter
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,6 +64,8 @@ class ProjectDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getProjectBundle()
+        imageListingAdapter = ImageListingAdapter(imageUri)
+        binding.rvPhoto.adapter = imageListingAdapter
         binding.btnUploadImages.setOnClickListener {
             camera()
         }
@@ -77,7 +75,17 @@ class ProjectDetailFragment : Fragment() {
             objProject = it?.getParcelable("project")!!
             Log.d(TAG, "getProjectBundle: $it")
         }
+        processImageUri()
     }
+
+    private fun processImageUri(){
+        objProject.images.forEach{
+            imageUri.add(it.toUri())
+        }
+        Log.d(TAG, "processImageUri: ${objProject.images}")
+        Log.d(TAG, "processImageUriImageUri: ${imageUri}")
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -92,7 +100,7 @@ class ProjectDetailFragment : Fragment() {
     private val permReqLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { licenses ->
             val granted = licenses.entries.all {
-                it.value == true
+                it.value
             }
             if (granted) {
 
@@ -137,13 +145,20 @@ class ProjectDetailFragment : Fragment() {
 
     private fun displayCameraFragment(){
         val bundle = Bundle()
-        bundle.putString("project_id", objProject.id)
-        val bundle_userId = Bundle()
-        bundle_userId.putString("user_id", objProject.user_id)
-        Log.d(TAG, "onViewCreated: ${objProject.id}")
+        bundle.putParcelable("project", objProject)
+        //Data Images.array, user_parent, id_project
+            Log.d(TAG, "onViewCreated: ${objProject.id}")
         val intentCamera = Intent(activity?.applicationContext, CameraActivity::class.java)
-        intentCamera.putExtra("bundle_project_image", bundle)
-        intentCamera.putExtra("bundle_userId", bundle_userId)
+        intentCamera.putExtra("project", bundle)
         startActivity(intentCamera)
+//        findNavController().navigate(R.id.action_projec_detail_to_camera, bundle)
+    }
+
+    private fun displayAddCollaborator(){
+        val bundle = Bundle()
+        bundle.putParcelable("project", objProject)
+        binding.buttonSettings.setOnClickListener {
+            findNavController().navigate(R.id.action_to_add_collaborator_fragment, bundle)
+        }
     }
 }

@@ -33,7 +33,7 @@ class AccountFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        binding.buttonLogout.setOnClickListener{
+        binding.logout.setOnClickListener{
             accountViewModel.logout {
                  val intent = Intent(activity, MainActivity::class.java)
                 startActivity(intent)

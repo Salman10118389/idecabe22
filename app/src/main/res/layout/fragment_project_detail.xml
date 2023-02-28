@@ -96,7 +96,7 @@
             android:id="@+id/btnSaveProject"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_40sdp"
-            android:text="Save Project"
+            android:text="Add project"
             app:layout_constraintStart_toEndOf="@+id/btnUploadImages"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
