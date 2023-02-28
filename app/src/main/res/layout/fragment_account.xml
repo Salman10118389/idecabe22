@@ -143,6 +143,7 @@
                 >
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
+                    android:id="@+id/logout"
                     android:layout_height="@dimen/_32sdp"
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="@dimen/_20sdp">

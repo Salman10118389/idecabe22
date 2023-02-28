@@ -5,6 +5,7 @@ import android.util.Log
 import com.example.idecabe2.data.model.Project
 import com.example.idecabe2.data.model.User
 import com.example.idecabe2.utils.FireStoreDocumentField
+import com.example.idecabe2.utils.FirebaseStorageConstants
 import com.example.idecabe2.utils.FirestoreTable
 import com.example.idecabe2.utils.UiState
 import com.google.firebase.FirebaseException
@@ -12,6 +13,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
@@ -57,16 +60,32 @@ class ProjectRepoImp(private val database: FirebaseFirestore, private val storag
                     UiState.failure(it.localizedMessage.toString())
                 )
             }
+
     }
 
     override fun updateProject(project: Project, result: (UiState<String>) -> Unit) {
+        val document = database.collection(FirestoreTable.PROJECT).document(project.id)
+        document
+            .set(project)
+            .addOnSuccessListener {
+                result.invoke(
+                    UiState.Success("Project has been updated")
+                )
+            }
+            .addOnFailureListener{
+                result.invoke(
+                    UiState.failure(
+                        it.localizedMessage
+                    )
+                )
+            }
 
     }
 
     override suspend fun uploadSingleFile(fileUri: Uri, onResult: (UiState<Uri>) -> Unit) {
         try {
             val uri: Uri = withContext(Dispatchers.IO){
-                storageReference
+                storageReference.child(FirebaseStorageConstants.PROJECT_PHOTO)
                     .putFile(fileUri)
                     .await()
                     .storage
@@ -85,8 +104,22 @@ class ProjectRepoImp(private val database: FirebaseFirestore, private val storag
         fileUir: List<Uri>,
         onResult: (UiState<List<Uri>>) -> Unit
     ) {
-
+        try{
+            val uri: List<Uri> = withContext(Dispatchers.IO){
+                fileUir.map { image ->
+                    async { storageReference.child(FirebaseStorageConstants.PROJECT_PHOTO).child(image.lastPathSegment ?: "${System.currentTimeMillis()}")
+                        .putFile(image)
+                        .await()
+                        .storage
+                        .downloadUrl
+                        .await() }
+                }.awaitAll()
+            }
+            onResult.invoke(UiState.Success(uri))
+        }catch (e: FirebaseException){
+            onResult.invoke(UiState.failure(e.localizedMessage))
+        }catch (e: Exception){
+            onResult.invoke(UiState.failure(e.localizedMessage))
+        }
     }
-
-
 }

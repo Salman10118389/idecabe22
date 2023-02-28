@@ -12,12 +12,13 @@
         tools:layout="@layout/fragment_home">
     </fragment>
 
-
     <action
         android:id="@+id/action_to_project_detail_fragment"
         app:destination="@id/projecctDetailFragment"
         />
-
+    <action
+        android:id="@+id/action_to_add_collaborator_fragment"
+        app:destination="@+id/addCollaboratorFragment"/>
     <action
         android:id="@+id/nav_test_fragment"
         app:destination="@+id/navigation_blacnk">
@@ -70,4 +71,19 @@
         android:label="@string/camera"
         tools:layout="@layout/fragment_camera"
         />
+
+    <fragment
+        android:id="@+id/addCollaboratorFragment"
+        android:name="com.example.idecabe2.ui.add_collaborator.AddCollaboratorFragment"
+        android:label="@string/addCollabroator"
+        tools:layout="@layout/fragment_add_collaborator"
+        />
+
+    <fragment
+        android:id="@+id/account_fragment"
+        android:name="com.example.idecabe2.ui.account.AccountFragment"
+        android:label="account fragment"
+        tools:layout="@layout/fragment_account"
+        />
+
 </navigation>

@@ -2,13 +2,18 @@ package com.example.idecabe2.ui.home
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -17,6 +22,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.idecabe2.MainActivity
 import com.example.idecabe2.R
 import com.example.idecabe2.data.model.Project
 import com.example.idecabe2.databinding.FragmentAddProjectBinding
@@ -36,7 +42,7 @@ class HomeFragment : Fragment(), postClickedItem  {
     private lateinit var binding: FragmentHomeBinding
     private val homeViewModel: HomeViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels()
-
+    private var doublePressed = false
 
     //connect to adapter
     private lateinit var adapter: HomeAdapter
@@ -58,9 +64,14 @@ class HomeFragment : Fragment(), postClickedItem  {
         binding.recyclerViewhome.adapter  = adapter
         //Ambil data Project View Model
         authViewModel.getSession {
-            homeViewModel.getProjects(it)
-            if (homeViewModel.getProjects(it).equals(0)){
-                binding.textData.setText("You haven't created \na Project yet")
+            if (it == null){
+                val intent = Intent(activity?.applicationContext,MainActivity::class.java)
+                startActivity(intent)
+            }else {
+                homeViewModel.getProjects(it)
+                if (homeViewModel.getProjects(it).equals(0)){
+                    binding.textData.setText("You haven't created \na Project yet")
+                }
             }
         }
         homeViewModel.getProjects.observe(viewLifecycleOwner){state ->
@@ -77,6 +88,21 @@ class HomeFragment : Fragment(), postClickedItem  {
                     }
                 }
             }
+
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true){
+                override fun handleOnBackPressed() {
+                    if (doublePressed){
+                        activity?.finish()
+                    }
+                    doublePressed = true
+                    Toast.makeText(activity?.applicationContext, "One More Back Press to Exit", Toast.LENGTH_SHORT).show()
+                    Handler(Looper.getMainLooper()).postDelayed(Runnable{
+                        doublePressed = false
+                    }, 2000)
+                }
+            })
     }
     override fun onDestroyView() {
         super.onDestroyView()

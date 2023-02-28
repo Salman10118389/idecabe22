@@ -3,6 +3,8 @@ package com.example.idecabe2.utils
 object FirestoreTable {
     val PROJECT = "PROJECTS"
     val USERS = "USERS"
+    val PROJECT_PHOTO = "PROJECT_PHOTO"
+    val PROJECT_COLLABORATION = "PROJECT_COLLABORATION"
 }
 
 object FireStoreDocumentField{

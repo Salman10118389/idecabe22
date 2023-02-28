@@ -10,6 +10,7 @@ import com.example.idecabe2.data.model.User
 import com.example.idecabe2.data.reporitory.ProjectRepository
 import com.example.idecabe2.utils.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,6 +27,18 @@ class CameraViewModel @Inject constructor(val repo: ProjectRepository) : ViewMod
         }
     }
 
+    //Update Note
+    private val _updateProject = MutableLiveData<UiState<String>>()
+    val updateProject: LiveData<UiState<String>>
+    get() = _updateProject
+
+    fun updateProject(project: Project){
+        _updateProject.value = UiState.Loading
+        repo.updateProject(project){
+            _updateProject.value = it
+        }
+    }
+
     fun onUploadSingleFile(fileUris: Uri, onResult: (UiState<Uri>) -> Unit){
         onResult.invoke(UiState.Loading)
         viewModelScope.launch {
@@ -34,12 +47,14 @@ class CameraViewModel @Inject constructor(val repo: ProjectRepository) : ViewMod
         }
     }
 
-    fun onUploadMultipleFiles(fileUris: List<Uri>,onResult: (UiState<List<Uri>>) -> Unit){
+    fun onUploadMultipleFiles(fileUris: List<Uri>, onResult: (UiState<List<Uri>>) -> Unit){
         onResult.invoke(UiState.Loading)
         viewModelScope.launch {
             repo.uploadMultipleFile(fileUris, onResult)
         }
     }
+
+
 
 
 

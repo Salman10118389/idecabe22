@@ -1,48 +1,35 @@
 package com.example.idecabe2.ui.camera
 
-import android.Manifest
+import android.R
 import android.content.ContentValues
-import android.content.Context
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import android.provider.MediaStore
-import android.provider.MediaStore.Audio.Media
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresPermission
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
-import androidx.camera.core.impl.utils.ContextUtil
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import com.example.idecabe2.R
 import com.example.idecabe2.data.model.Project
 import com.example.idecabe2.databinding.FragmentCameraBinding
-import com.example.idecabe2.databinding.FragmentHomeBinding
 import com.example.idecabe2.ui.auth.AuthViewModel
-import com.example.idecabe2.utils.UiState
-import com.example.idecabe2.utils.hide
-import com.example.idecabe2.utils.show
-import com.example.idecabe2.utils.toast
-import com.google.firebase.firestore.ServerTimestamp
-import com.google.firebase.storage.StorageReference
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
+
 
 @AndroidEntryPoint
 class CameraFragment : Fragment() {
@@ -73,6 +60,10 @@ class CameraFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         startCamera()
+        binding.buttonPhoto.setOnClickListener{
+            takePhoto()
+        }
+
 
     }
     override fun onDestroyView() {
@@ -190,12 +181,10 @@ class CameraFragment : Fragment() {
                 cameraProvider.unbindAll()
                 cameraProvider.bindToLifecycle(this@CameraFragment, cameraSelector,preview , imageCapture)
             }catch (e: Exception){
-                Log.e(TAG, "startCamera: ", e)
+                Log.e(TAG, "errorCamera: ", e)
             }
         }, activity?.let { ContextCompat.getMainExecutor(it.applicationContext) })
-        objProject = arguments?.getParcelable("project")!!
-        Log.d(TAG, "startCamera: $objProject")
-    }
-
-
+            objProject = arguments?.getParcelable("project")!!
+            Log.d(TAG, "startCamera: $objProject")
+        }
 }
